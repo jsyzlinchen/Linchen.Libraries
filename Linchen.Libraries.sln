@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linchen.Libraries.IDAL", "L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linchen.Libraries.Model", "Linchen.Libraries.Model\Linchen.Libraries.Model.csproj", "{28BD8550-D43B-4336-A796-38D72980ED1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManager", "E:\Linc_Test\FileManager\FileManager.csproj", "{43B9A586-49B3-4793-8579-3FEB9C002356}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManager", "FileManager\FileManager.csproj", "{43B9A586-49B3-4793-8579-3FEB9C002356}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
