@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -86,10 +87,21 @@ namespace FileManager
 
             }
         }
+        private ListViewItem selectItem;
 
         private void lvFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (this.lvFiles.SelectedItems.Count>0)
+            {
+                 selectItem = this.lvFiles.SelectedItems[0];
+            }
+           
+        } 
 
+        private void 打开ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string path = selectItem.SubItems[3].Text;
+            Process.Start(path);
         }
     }
 }

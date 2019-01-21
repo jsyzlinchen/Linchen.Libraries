@@ -8,6 +8,6 @@ namespace Linchen.Framework
 {
     public class StaticConstant
     {
-        public static string SqlServiceConnString = 
+        public static string SqlServiceConnString = null;
     }
 }
