@@ -30,12 +30,15 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbMessage = new System.Windows.Forms.Label();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.btnStart = new System.Windows.Forms.Button();
             this.txtPath = new System.Windows.Forms.TextBox();
             this.btnPath = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tvFolder = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.粘贴ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tmsiPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.panel3 = new System.Windows.Forms.Panel();
             this.lvFiles = new System.Windows.Forms.ListView();
             this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,10 +46,10 @@
             this.chType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.打开ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.复制ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.剪切ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiCut = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -56,6 +59,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lbMessage);
+            this.panel1.Controls.Add(this.btnClose);
+            this.panel1.Controls.Add(this.btnStart);
             this.panel1.Controls.Add(this.txtPath);
             this.panel1.Controls.Add(this.btnPath);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -65,12 +71,41 @@
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // lbMessage
+            // 
+            this.lbMessage.AutoSize = true;
+            this.lbMessage.Location = new System.Drawing.Point(730, 63);
+            this.lbMessage.Name = "lbMessage";
+            this.lbMessage.Size = new System.Drawing.Size(98, 18);
+            this.lbMessage.TabIndex = 4;
+            this.lbMessage.Text = "监控已关闭";
+            // 
+            // btnClose
+            // 
+            this.btnClose.Location = new System.Drawing.Point(854, 12);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(103, 28);
+            this.btnClose.TabIndex = 3;
+            this.btnClose.Text = "关闭监控";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnStart
+            // 
+            this.btnStart.Location = new System.Drawing.Point(733, 12);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(91, 28);
+            this.btnStart.TabIndex = 2;
+            this.btnStart.Text = "开启监控";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
             // txtPath
             // 
             this.txtPath.Location = new System.Drawing.Point(200, 40);
             this.txtPath.Name = "txtPath";
             this.txtPath.ReadOnly = true;
-            this.txtPath.Size = new System.Drawing.Size(777, 28);
+            this.txtPath.Size = new System.Drawing.Size(493, 28);
             this.txtPath.TabIndex = 1;
             // 
             // btnPath
@@ -101,20 +136,22 @@
             this.tvFolder.Size = new System.Drawing.Size(185, 490);
             this.tvFolder.TabIndex = 0;
             this.tvFolder.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFolder_AfterSelect);
+            this.tvFolder.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvFolder_MouseDown);
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.粘贴ToolStripMenuItem});
+            this.tmsiPaste});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(117, 32);
             // 
-            // 粘贴ToolStripMenuItem
+            // tmsiPaste
             // 
-            this.粘贴ToolStripMenuItem.Name = "粘贴ToolStripMenuItem";
-            this.粘贴ToolStripMenuItem.Size = new System.Drawing.Size(116, 28);
-            this.粘贴ToolStripMenuItem.Text = "粘贴";
+            this.tmsiPaste.Name = "tmsiPaste";
+            this.tmsiPaste.Size = new System.Drawing.Size(116, 28);
+            this.tmsiPaste.Text = "粘贴";
+            this.tmsiPaste.Click += new System.EventHandler(this.tmsiPaste_Click);
             // 
             // panel3
             // 
@@ -142,6 +179,7 @@
             this.lvFiles.UseCompatibleStateImageBehavior = false;
             this.lvFiles.View = System.Windows.Forms.View.Details;
             this.lvFiles.SelectedIndexChanged += new System.EventHandler(this.lvFiles_SelectedIndexChanged);
+            this.lvFiles.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvFiles_MouseDoubleClick);
             // 
             // chName
             // 
@@ -167,37 +205,40 @@
             // 
             this.contextMenuStrip2.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.打开ToolStripMenuItem,
-            this.复制ToolStripMenuItem,
-            this.剪切ToolStripMenuItem,
-            this.删除ToolStripMenuItem});
+            this.tsmiOpen,
+            this.tsmiCopy,
+            this.tsmiCut,
+            this.tsmiDelete});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
             this.contextMenuStrip2.Size = new System.Drawing.Size(117, 116);
             // 
-            // 打开ToolStripMenuItem
+            // tsmiOpen
             // 
-            this.打开ToolStripMenuItem.Name = "打开ToolStripMenuItem";
-            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(116, 28);
-            this.打开ToolStripMenuItem.Text = "打开";
-            this.打开ToolStripMenuItem.Click += new System.EventHandler(this.打开ToolStripMenuItem_Click);
+            this.tsmiOpen.Name = "tsmiOpen";
+            this.tsmiOpen.Size = new System.Drawing.Size(116, 28);
+            this.tsmiOpen.Text = "打开";
+            this.tsmiOpen.Click += new System.EventHandler(this.tsmiOpen_Click);
             // 
-            // 复制ToolStripMenuItem
+            // tsmiCopy
             // 
-            this.复制ToolStripMenuItem.Name = "复制ToolStripMenuItem";
-            this.复制ToolStripMenuItem.Size = new System.Drawing.Size(116, 28);
-            this.复制ToolStripMenuItem.Text = "复制";
+            this.tsmiCopy.Name = "tsmiCopy";
+            this.tsmiCopy.Size = new System.Drawing.Size(116, 28);
+            this.tsmiCopy.Text = "复制";
+            this.tsmiCopy.Click += new System.EventHandler(this.tsmiCopy_Click);
             // 
-            // 剪切ToolStripMenuItem
+            // tsmiCut
             // 
-            this.剪切ToolStripMenuItem.Name = "剪切ToolStripMenuItem";
-            this.剪切ToolStripMenuItem.Size = new System.Drawing.Size(116, 28);
-            this.剪切ToolStripMenuItem.Text = "剪切";
+            this.tsmiCut.Name = "tsmiCut";
+            this.tsmiCut.Size = new System.Drawing.Size(116, 28);
+            this.tsmiCut.Text = "剪切";
+            this.tsmiCut.Click += new System.EventHandler(this.tsmiCut_Click);
             // 
-            // 删除ToolStripMenuItem
+            // tsmiDelete
             // 
-            this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
-            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(116, 28);
-            this.删除ToolStripMenuItem.Text = "删除";
+            this.tsmiDelete.Name = "tsmiDelete";
+            this.tsmiDelete.Size = new System.Drawing.Size(116, 28);
+            this.tsmiDelete.Text = "删除";
+            this.tsmiDelete.Click += new System.EventHandler(this.tsmiDelete_Click);
             // 
             // Form1
             // 
@@ -233,12 +274,15 @@
         private System.Windows.Forms.ColumnHeader chType;
         private System.Windows.Forms.ColumnHeader chPath;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 粘贴ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tmsiPaste;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
-        private System.Windows.Forms.ToolStripMenuItem 打开ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 复制ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 剪切ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 删除ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiOpen;
+        private System.Windows.Forms.ToolStripMenuItem tsmiCopy;
+        private System.Windows.Forms.ToolStripMenuItem tsmiCut;
+        private System.Windows.Forms.ToolStripMenuItem tsmiDelete;
+        private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Label lbMessage;
     }
 }
 
