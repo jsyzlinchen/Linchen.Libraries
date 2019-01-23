@@ -49,5 +49,23 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Linchen.Framework\Linchen.Framework.csproj">
+      <Project>{aae78afb-86f3-465a-b39a-7f0aab1f4970}</Project>
+      <Name>Linchen.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Linchen.Libraries.DAL\Linchen.Libraries.DAL.csproj">
+      <Project>{3d7511c7-7c25-4816-8714-0f7fcf17d3b2}</Project>
+      <Name>Linchen.Libraries.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Linchen.Libraries.IDAL\Linchen.Libraries.IDAL.csproj">
+      <Project>{a41d683c-691d-4d46-a8a9-60fae64e9ed6}</Project>
+      <Name>Linchen.Libraries.IDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Linchen.Libraries.Model\Linchen.Libraries.Model.csproj">
+      <Project>{28bd8550-d43b-4336-a796-38d72980ed1b}</Project>
+      <Name>Linchen.Libraries.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
