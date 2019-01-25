@@ -1,4 +1,5 @@
-﻿using Linchen.Framework.Model;
+﻿using Linchen.Framework.AttributeExtend;
+using Linchen.Framework.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Linchen.Libraries.Model
 
         //public int State { get; set; }
 
-       
+        [Column("state")]
         public int Status { get; set; }
 
         public int UserType { get; set; }
