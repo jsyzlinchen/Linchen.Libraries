@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Linchen.Libraries.Model
 {
-    class User:BaseModel
+    public class User:BaseModel
     {
         public string Name { get; set; }
 

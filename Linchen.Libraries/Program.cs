@@ -16,14 +16,18 @@ namespace Linchen.Libraries.Project
             {
                 Console.WriteLine("Hello");
                 BaseDAL baseDAL = new BaseDAL();
-                Company company = baseDAL.Find<Company>(6);
-                string s1 = company.Name;
-                Console.WriteLine(s1);
-                List<Company> c1 = baseDAL.FindAll<Company>();
-                foreach (var item in c1)
-                {
-                    Console.WriteLine(item.Name);
-                }
+                //Company company = baseDAL.Find<Company>(6);
+                //string s1 = company.Name;
+                //Console.WriteLine(s1);
+                //List<Company> c1 = baseDAL.FindAll<Company>();
+                //foreach (var item in c1)
+                //{
+                //    Console.WriteLine(item.Name);
+                //}
+
+                User user = baseDAL.Find<User>(1);
+                List<User> list = baseDAL.FindAll<User>();
+
             } 
             catch (Exception ex)
             {

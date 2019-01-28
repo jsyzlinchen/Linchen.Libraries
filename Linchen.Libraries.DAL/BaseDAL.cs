@@ -1,4 +1,5 @@
 ﻿using Linchen.Framework;
+using Linchen.Framework.AttributeExtend;
 using Linchen.Framework.Model;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Linchen.Libraries.DAL
             Type type = typeof(T);
             //string sql = $"select {0} from {1} where Id={id}";
             // 把当前类型的所有属性，把每一个属性的名称 都转换成加一个[] 然后这个集合用","连接
-            string columnString = string.Join(",", type.GetProperties().Select(p => $"[{p.Name}]"));
+            string columnString = string.Join(",", type.GetProperties().Select(p => $"[{p.GetColumnName()}]"));
             string sql = $"select {columnString} from [{type.Name}] where Id={id}";
             T t = (T)Activator.CreateInstance(type);
             using (SqlConnection conn = new SqlConnection(StaticConstant.SqlServerConnString))
@@ -47,7 +48,9 @@ namespace Linchen.Libraries.DAL
             Type type = typeof(T);
             //string sql = $"select {0} from {1} where Id={id}";
             // 把当前类型的所有属性，把每一个属性的名称 都转换成加一个[] 然后这个集合用","连接
-            string columnString = string.Join(",", type.GetProperties().Select(p => $"[{p.Name}]"));
+            //string columnString = string.Join(",", type.GetProperties().Select(p => $"[{p.Name}]"));
+            //string sql = $"select {columnString} from [{type.Name}]";
+            string columnString = string.Join(",", type.GetProperties().Select(p => $"[{p.GetColumnName()}]"));
             string sql = $"select {columnString} from [{type.Name}]";
             List<T> list = new List<T>();
             using (SqlConnection conn = new SqlConnection(StaticConstant.SqlServerConnString))
@@ -72,7 +75,10 @@ namespace Linchen.Libraries.DAL
                 T t = (T)Activator.CreateInstance(type);
                 foreach (var prop in type.GetProperties())
                 {
-                    prop.SetValue(t, reader[prop.Name] is DBNull ? null : reader[prop.Name]);
+                    object oValue = reader[prop.GetColumnName()];
+                    if (oValue is DBNull)
+                        oValue = null;
+                    prop.SetValue(t, oValue);
                 }
                 list.Add(t);
             }
