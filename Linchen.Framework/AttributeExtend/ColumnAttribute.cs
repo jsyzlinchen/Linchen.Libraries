@@ -16,7 +16,7 @@ namespace Linchen.Framework.AttributeExtend
 
         private string _Name = null;
 
-        public string GetColumnName()
+        public string GetColumnName1()
         {
             return _Name;
         }
