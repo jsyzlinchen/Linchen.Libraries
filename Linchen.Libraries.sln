@@ -15,7 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linchen.Libraries.Model", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManager", "FileManager\FileManager.csproj", "{43B9A586-49B3-4793-8579-3FEB9C002356}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2F0EFB3A-EFB9-4BD6-B19E-767593988A2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{2F0EFB3A-EFB9-4BD6-B19E-767593988A2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linchen.Libraries.Factory", "Linchen.Libraries.Factory\Linchen.Libraries.Factory.csproj", "{FB086EBA-F682-4F9F-A3B2-23B4C656A857}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{2F0EFB3A-EFB9-4BD6-B19E-767593988A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F0EFB3A-EFB9-4BD6-B19E-767593988A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F0EFB3A-EFB9-4BD6-B19E-767593988A2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB086EBA-F682-4F9F-A3B2-23B4C656A857}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB086EBA-F682-4F9F-A3B2-23B4C656A857}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB086EBA-F682-4F9F-A3B2-23B4C656A857}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB086EBA-F682-4F9F-A3B2-23B4C656A857}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

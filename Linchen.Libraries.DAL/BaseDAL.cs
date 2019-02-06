@@ -1,6 +1,7 @@
 ﻿using Linchen.Framework;
 using Linchen.Framework.AttributeExtend;
 using Linchen.Framework.Model;
+using Linchen.Libraries.IDAL;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -10,17 +11,20 @@ using System.Threading.Tasks;
 
 namespace Linchen.Libraries.DAL
 {
-    public class BaseDAL
+    public class BaseDAL:IBaseDAL
     {
-        
+
         // 约束是为了正常的调用
         // 能保证传的T 是BaseModel的子类
-        //1,
+        //1,            
+        //GetColumnName 字段名  Properties特性   列名columnString
         public T Find<T>(int id) where T : BaseModel
         {
             Type type = typeof(T);
             //string sql = $"select {0} from {1} where Id={id}";
             // 把当前类型的所有属性，把每一个属性的名称 都转换成加一个[] 然后这个集合用","连接
+            //string columnString = string.Join(",", type.Name().Select(p => $"[{p.Name()}]"));
+            //string sql = $"select {columnString} from [{type.Name}] where Id={id}";
             string columnString = string.Join(",", type.GetProperties().Select(p => $"[{p.GetColumnName()}]"));
             string sql = $"select {columnString} from [{type.Name}] where Id={id}";
             T t = (T)Activator.CreateInstance(type);
@@ -28,7 +32,7 @@ namespace Linchen.Libraries.DAL
             {
                 SqlCommand command = new SqlCommand(sql, conn);
                 conn.Open();
-                SqlDataReader reader =  command.ExecuteReader();
+                SqlDataReader reader = command.ExecuteReader();
                 List<T> list = this.ReadToList<T>(reader);
                 t = list.FirstOrDefault();
                 //if (reader.Read())//表示有数据 开始读取
@@ -63,6 +67,40 @@ namespace Linchen.Libraries.DAL
             return list;
         }
 
+
+
+        public void Update<T>(T t) where T : BaseModel
+        {
+            Type type = typeof(T);
+            var propArray = type.GetProperties().Where(p => !p.Name.Equals("Id"));//得到type 所有公共属性
+            string columnString = string.Join(",", propArray.Select(p => $"[{p.GetColumnName()}]=@[{p.GetColumnName()}]"));
+            //必须参数化  不然值里面有引号
+
+            var parameters = propArray.Select(p => new SqlParameter($"@{p.GetColumnName()}", p.GetValue(t) ?? DBNull.Value)).ToArray();
+            string sql = $"UPDATE {type.Name} SER{columnString} WHERE ID={t.Id}";
+
+            using (SqlConnection conn = new SqlConnection(StaticConstant.SqlServerConnString))
+            {
+                SqlCommand command = new SqlCommand(sql, conn);
+                command.Parameters.AddRange(parameters);
+                conn.Open();
+                int iResult = command.ExecuteNonQuery();//返回受影响的行数
+                if (iResult == 0) throw new Exception("Update数据不存在");
+
+            }
+
+        }
+
+        public void Insert<T>(T t) where T : BaseModel
+        {
+
+        }
+
+        public void Delete<T>(int id) where T : BaseModel
+        {
+
+        }
+
         //优化封装
         //3.
         private List<T> ReadToList<T>(SqlDataReader reader)
@@ -84,6 +122,7 @@ namespace Linchen.Libraries.DAL
             }
             return list;
         }
+
 
     }
 }

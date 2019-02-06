@@ -58,6 +58,10 @@
       <Project>{3d7511c7-7c25-4816-8714-0f7fcf17d3b2}</Project>
       <Name>Linchen.Libraries.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Linchen.Libraries.Factory\Linchen.Libraries.Factory.csproj">
+      <Project>{fb086eba-f682-4f9f-a3b2-23b4c656a857}</Project>
+      <Name>Linchen.Libraries.Factory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Linchen.Libraries.IDAL\Linchen.Libraries.IDAL.csproj">
       <Project>{a41d683c-691d-4d46-a8a9-60fae64e9ed6}</Project>
       <Name>Linchen.Libraries.IDAL</Name>

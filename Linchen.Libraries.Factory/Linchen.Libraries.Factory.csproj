@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3D7511C7-7C25-4816-8714-0F7FCF17D3B2}</ProjectGuid>
+    <ProjectGuid>{FB086EBA-F682-4F9F-A3B2-23B4C656A857}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Linchen.Libraries.DAL</RootNamespace>
-    <AssemblyName>Linchen.Libraries.DAL</AssemblyName>
+    <RootNamespace>Linchen.Libraries.Factory</RootNamespace>
+    <AssemblyName>Linchen.Libraries.Factory</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,21 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseDAL.cs" />
+    <Compile Include="DALFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Linchen.Framework\Linchen.Framework.csproj">
-      <Project>{aae78afb-86f3-465a-b39a-7f0aab1f4970}</Project>
+      <Project>{AAE78AFB-86F3-465A-B39A-7F0AAB1F4970}</Project>
       <Name>Linchen.Framework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Linchen.Libraries.IDAL\Linchen.Libraries.IDAL.csproj">
       <Project>{A41D683C-691D-4D46-A8A9-60FAE64E9ED6}</Project>
       <Name>Linchen.Libraries.IDAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Linchen.Libraries.Model\Linchen.Libraries.Model.csproj">
-      <Project>{28bd8550-d43b-4336-a796-38d72980ed1b}</Project>
-      <Name>Linchen.Libraries.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

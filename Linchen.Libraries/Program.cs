@@ -1,4 +1,6 @@
 ﻿using Linchen.Libraries.DAL;
+using Linchen.Libraries.Factory;
+using Linchen.Libraries.IDAL;
 using Linchen.Libraries.Model;
 using System;
 using System.Collections.Generic;
@@ -15,7 +17,8 @@ namespace Linchen.Libraries.Project
             try
             {
                 Console.WriteLine("Hello");
-                BaseDAL baseDAL = new BaseDAL();
+                IBaseDAL baseDAL = DALFactory.CreateInstance();
+                //BaseDAL baseDAL = new BaseDAL();
                 //Company company = baseDAL.Find<Company>(6);
                 //string s1 = company.Name;
                 //Console.WriteLine(s1);
