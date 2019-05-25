@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Linchen.Libraries.DAL
 {
-    public class BaseDAL:IBaseDAL
+    public class BaseDAL2:IBaseDAL
     {
 
         // 约束是为了正常的调用
@@ -27,23 +27,30 @@ namespace Linchen.Libraries.DAL
             //string sql = $"select {columnString} from [{type.Name}] where Id={id}";
             string columnString = string.Join(",", type.GetProperties().Select(p => $"[{p.GetColumnName()}]"));
             string sql = $"select {columnString} from [{type.Name}] where Id={id}";
-            T t = (T)Activator.CreateInstance(type);
-            //使用与指定参数匹配程度最高的构造函数来创建指定类型的实例。
-            using (SqlConnection conn = new SqlConnection(StaticConstant.SqlServerConnString))
+            T t = null;
+            Func<SqlCommand, T> func = new Func<SqlCommand, T>(command =>
             {
-                SqlCommand command = new SqlCommand(sql, conn);
-                conn.Open();
                 SqlDataReader reader = command.ExecuteReader();
                 List<T> list = this.ReadToList<T>(reader);
-                t = list.FirstOrDefault();
-                //if (reader.Read())//表示有数据 开始读取
-                //{
-                //    foreach (var prop in type.GetProperties())
-                //    {
-                //        prop.SetValue(t, reader[prop.Name] is DBNull? null: reader[prop.Name]);
-                //    }
-                //}
-            }
+                T tResult = list.FirstOrDefault();
+                return tResult;
+            });
+            t = this.ExcuteSql<T>(sql, func);
+            //using (SqlConnection conn = new SqlConnection(StaticConstant.SqlServerConnString))
+            //{
+            //    SqlCommand command = new SqlCommand(sql, conn);
+            //    conn.Open();
+            //    SqlDataReader reader = command.ExecuteReader();
+            //    List<T> list = this.ReadToList<T>(reader);
+            //    t = list.FirstOrDefault();
+            //    //if (reader.Read())//表示有数据 开始读取
+            //    //{
+            //    //    foreach (var prop in type.GetProperties())
+            //    //    {
+            //    //        prop.SetValue(t, reader[prop.Name] is DBNull? null: reader[prop.Name]);
+            //    //    }
+            //    //}
+            //}
             return t;
         }
 
@@ -58,13 +65,21 @@ namespace Linchen.Libraries.DAL
             string columnString = string.Join(",", type.GetProperties().Select(p => $"[{p.GetColumnName()}]"));
             string sql = $"select {columnString} from [{type.Name}]";
             List<T> list = new List<T>();
-            using (SqlConnection conn = new SqlConnection(StaticConstant.SqlServerConnString))
-            {
-                SqlCommand command = new SqlCommand(sql, conn);
-                conn.Open();
-                SqlDataReader reader = command.ExecuteReader();
-                list = this.ReadToList<T>(reader);
-            }
+            Func<SqlCommand, List<T>> func = command =>
+             {
+                 SqlDataReader reader = command.ExecuteReader();
+                 List<T> listResult = this.ReadToList<T>(reader);
+                 return listResult;
+ 
+             };
+            list = this.ExcuteSql<List<T>>(sql, func);
+            //using (SqlConnection conn = new SqlConnection(StaticConstant.SqlServerConnString))
+            //{
+            //    SqlCommand command = new SqlCommand(sql, conn);
+            //    conn.Open();
+            //    SqlDataReader reader = command.ExecuteReader();
+            //    list = this.ReadToList<T>(reader);
+            //}
             return list;
         }
 
@@ -80,49 +95,52 @@ namespace Linchen.Libraries.DAL
             var parameters = propArray.Select(p => new SqlParameter($"@{p.GetColumnName()}", p.GetValue(t) ?? DBNull.Value)).ToArray();
             string sql = $"UPDATE {type.Name} SER{columnString} WHERE ID={t.Id}";
 
-            using (SqlConnection conn = new SqlConnection(StaticConstant.SqlServerConnString))
-            {
-                using (SqlCommand command = new SqlCommand(sql, conn))
-                {
-                    command.Parameters.AddRange(parameters);
-                    conn.Open();
-                    int iResult = command.ExecuteNonQuery();
-                    if (iResult == 0)
-                        throw new Exception("Update数据不存在");
-                }
-            }
+            Func<SqlCommand, int> func = command =>
+             {
+                 command.Parameters.AddRange(parameters);
+                 int iResult = command.ExecuteNonQuery();
+                 return iResult;
+             };
+
+            //using (SqlConnection conn = new SqlConnection(StaticConstant.SqlServerConnString))
+            //{
+            //    using (SqlCommand command = new SqlCommand(sql, conn))
+            //    {
+            //        command.Parameters.AddRange(parameters);
+            //        conn.Open();
+            //        int iResult = command.ExecuteNonQuery();
+            //        if (iResult == 0)
+            //            throw new Exception("Update数据不存在");
+            //    }
+            //}
+            int i = this.ExcuteSql<int>(sql, func);
+            if (i == 0)
+                throw new Exception("updata数据不存在");
 
         }
 
         //多个方法里面重复对数据库访问   通过委托解耦  去掉重复代码
         private T ExcuteSql<T>(string sql,Func<SqlCommand,T> func)
         {
-            //数据库连接
-            using (SqlConnection conn = new SqlConnection(StaticConstant.SqlServerConnString))
+            using (SqlConnection conn = new SqlConnection(StaticConstant.SqlServerConnString)) //数据库连接
             {
-                //数据库命令
-                using (SqlCommand command = new SqlCommand(sql, conn))
+                using (SqlCommand command = new SqlCommand(sql, conn))//数据库命令
                 {
-                    //事务
-                    SqlTransaction sqlTransaction = conn.BeginTransaction();
+                    conn.Open(); //开启连接
+                    SqlTransaction sqlTransaction = conn.BeginTransaction(); //事务
                     try
                     {
-                        //开启链接
-                        conn.Open();
-                        T tResult = func.Invoke(command);
-                        //提交事务
-                        sqlTransaction.Commit();
+                        command.Transaction = sqlTransaction;
+                        T tResult = func.Invoke(command);//核心
+                        sqlTransaction.Commit();//提交事务
                         return tResult;
                     }
                     catch (Exception ex)
                     {
-                        //回退事务
-                        sqlTransaction.Rollback();
+                        sqlTransaction.Rollback();  //回退事务
                         throw;
                     }
-                    
                 }
-
             }
         }
 

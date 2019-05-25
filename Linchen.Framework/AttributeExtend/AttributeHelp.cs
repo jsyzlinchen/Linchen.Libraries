@@ -19,7 +19,7 @@ namespace Linchen.Framework.AttributeExtend
             if (prop.IsDefined(typeof(ColumnAttribute), true))
             {
                 ColumnAttribute attribute = (ColumnAttribute)prop.GetCustomAttribute(typeof(ColumnAttribute), true);
-                return attribute.GetColumnName1();
+                return attribute.GetColumnName();
             }
             else
             {
