@@ -60,6 +60,7 @@ namespace Linchen.Libraries.DAL
             List<T> list = new List<T>();
             using (SqlConnection conn = new SqlConnection(StaticConstant.SqlServerConnString))
             {
+                //申明一个存储过程 （sql语句，数据库连接）
                 SqlCommand command = new SqlCommand(sql, conn);
                 conn.Open();
                 SqlDataReader reader = command.ExecuteReader();
